@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Order",
+  "type": "object",
+  "required": ["order_id", "customer_id", "total", "status", "items"],
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "pattern": "^ORD-\\d{4}$",
+      "description": "Unique order identifier"
+    },
+    "customer_id": {
+      "type": "string",
+      "pattern": "^CUST-\\d{3}$",
+      "description": "Customer who placed the order"
+    },
+    "total": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Order total in USD"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "shipped", "delivered", "cancelled", "refunded"],
+      "description": "Current order status"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "quantity", "price"],
+        "properties": {
+          "name": { "type": "string" },
+          "quantity": { "type": "integer", "minimum": 1 },
+          "price": { "type": "number", "minimum": 0 }
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "refund_eligible": {
+      "type": "boolean",
+      "description": "Whether this order can be refunded"
+    }
+  }
+}

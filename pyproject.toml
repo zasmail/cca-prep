@@ -1,0 +1,31 @@
+[project]
+name = "cca-prep"
+version = "0.1.0"
+description = "CCA-F Exam Prep — Hands-On Learning System"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.40.0",
+    "mcp[cli]>=1.0.0",
+    "fastmcp>=0.1.0",
+    "pytest>=8.0.0",
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["modules", "shared"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]

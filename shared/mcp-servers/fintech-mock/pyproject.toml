@@ -1,0 +1,9 @@
+[project]
+name = "fintech-mock"
+version = "0.1.0"
+description = "Fintech mock MCP server for CCA-F exam prep"
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=1.0.0",
+    "fastmcp>=0.1.0",
+]

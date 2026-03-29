@@ -1,0 +1,70 @@
+{
+  "learner": {
+    "level": "intermediate",
+    "focus": "fintech",
+    "started": null,
+    "target_exam_date": null
+  },
+  "modules": {
+    "support_agent_01": {
+      "name": "Customer Support Agent",
+      "domains": ["D1"],
+      "weight": "27%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 5 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 4 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    },
+    "claude_code_config_02": {
+      "name": "Claude Code Configuration",
+      "domains": ["D3", "D5"],
+      "weight": "20%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    },
+    "multi_agent_03": {
+      "name": "Multi-Agent Research System",
+      "domains": ["D1", "D2", "D5"],
+      "weight": "18%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    },
+    "dev_productivity_04": {
+      "name": "Developer Productivity",
+      "domains": ["D2", "D3", "D1"],
+      "weight": "18%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    },
+    "cicd_pipeline_05": {
+      "name": "CI/CD Pipeline Integration",
+      "domains": ["D3", "D4"],
+      "weight": "20%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    },
+    "extraction_06": {
+      "name": "Structured Data Extraction",
+      "domains": ["D4", "D5"],
+      "weight": "15%",
+      "tiers": {
+        "starter": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "intermediate": { "status": "not_started", "tests_passing": 0, "tests_total": 3 },
+        "advanced": { "status": "not_started", "tests_passing": 0, "tests_total": 3 }
+      }
+    }
+  }
+}

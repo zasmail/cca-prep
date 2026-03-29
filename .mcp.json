@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "fintech-mock": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "./shared/mcp-servers/fintech-mock",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}

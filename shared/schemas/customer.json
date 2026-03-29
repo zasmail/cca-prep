@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Customer",
+  "type": "object",
+  "required": ["customer_id", "name", "email", "account_id", "status"],
+  "properties": {
+    "customer_id": {
+      "type": "string",
+      "pattern": "^CUST-\\d{3}$",
+      "description": "Unique customer identifier"
+    },
+    "name": {
+      "type": "string",
+      "description": "Full name of the customer"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Customer email address"
+    },
+    "account_id": {
+      "type": "string",
+      "pattern": "^ACC-\\d{3}$",
+      "description": "Associated bank account ID"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "suspended", "closed"],
+      "description": "Customer account status"
+    },
+    "kyc_verified": {
+      "type": "boolean",
+      "description": "Whether KYC verification is complete"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Account creation timestamp"
+    }
+  }
+}
