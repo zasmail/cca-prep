@@ -1,4 +1,6 @@
 ---
+name: quiz-me
+description: Generates 5 exam-style multiple-choice questions on a given CCA-F topic (agentic-loops, hooks, mcp, tools, cicd, extraction, caching, batch-api, model-selection, context-management), presented one at a time with full explanations after each answer. Trigger on "quiz me on X", "test me on X", or "practice questions about X".
 argument-hint: <topic: agentic-loops | hooks | mcp | tools | cicd | extraction | caching | batch-api | model-selection | context-management>
 allowed-tools: Read
 ---
@@ -11,11 +13,11 @@ Generate 5 exam-style multiple choice questions for the CCA-F exam on the topic:
 - **agentic-loops**: D1 — stop_reason checking, loop lifecycle, tool_result formatting, max_iterations as safety net
 - **hooks**: D1, D3 — PreToolUse/PostToolUse, programmatic enforcement vs prompts, compliance gates
 - **mcp**: D2 — MCP server architecture, tool design, .mcp.json config, FastMCP patterns
-- **tools**: D2 — tool_choice options, tool descriptions encoding business rules, <5 tools per agent
+- **tools**: D2 — tool_choice options, tool descriptions encoding business rules, focused-tool-selection heuristic (few tools per agent; Tool Search / Programmatic Tool Calling is the scaling answer, not a hard cap)
 - **cicd**: D3 — -p flag, --output-format json, session isolation, --permission-mode plan
-- **extraction**: D4 — forced tool_use, nullable fields, validation-retry, citations two-pass
-- **caching**: D4, D5 — prompt caching (10% hit, 5min/1hr TTL, 1024 min, 4 breakpoints, prefix order)
-- **batch-api**: D4 — 10K max, 50% discount, 24h window, no SLA/streaming/multi-turn, .jsonl 29 days
+- **extraction**: D4 — forced tool_use, nullable fields, validation-retry, citations (incompatible with Structured Outputs, NOT with tool_use)
+- **caching**: D4, D5 — prompt caching (10% hit, 5min/1hr TTL, model-dependent minimum 512–4,096 tokens, 4 breakpoints, prefix order)
+- **batch-api**: D4 — 100,000 requests or 256 MB max, 50% discount, 24h window, no SLA/streaming (multi-turn + tool use ARE supported), .jsonl 29 days
 - **model-selection**: D5 — Opus/Sonnet/Haiku capabilities, pricing, context windows, extended thinking
 - **context-management**: D5 — CLAUDE.md hierarchy, @import, .claude/rules/, context isolation
 
@@ -23,7 +25,7 @@ Generate 5 exam-style multiple choice questions for the CCA-F exam on the topic:
 For each of the 5 questions:
 
 1. Present a **realistic scenario** (3-5 sentences describing an architecture decision)
-2. Give **4 options (A-D)** — each should be plausible, not obviously wrong
+2. Give **4 options (A-D)** — each should be plausible, not obviously wrong. The real exam is **multiple-choice AND multiple-response**: make at least 1 of the 5 questions a multi-select ("select TWO that apply" — say so explicitly in the question)
 3. **Wait for the learner's answer** before revealing the correct one
 4. After they answer, explain:
    - Why the correct answer is right (reference specific exam concept)

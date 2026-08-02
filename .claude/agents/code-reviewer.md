@@ -1,4 +1,6 @@
 ---
+name: code-reviewer
+description: Use to review CCA-F module implementation code against all 10 anti-patterns with severity levels. Invoke after writing or editing code in any module tier, or whenever the user asks for a code review or anti-pattern audit.
 tools: Read, Grep, Glob
 ---
 

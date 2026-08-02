@@ -231,7 +231,7 @@ def run_research_coordinator(
     research_question: str,
     *,
     max_workers: int = 4,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> SynthesizedReport:
     """Run the multi-agent research coordinator.
 

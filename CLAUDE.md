@@ -5,6 +5,8 @@ This is a hands-on prep system for the **Claude Certified Architect — Foundati
 Every module teaches by DOING — skeleton code with TODOs, not documentation to read.
 Theme: fintech (payments, accounts, KYC, fraud) to match real API demo work.
 
+> Note: the official exam code printed on the guide cover is **CCAR-F**. "CCA-F" is the common short name (Anthropic's own marketing/URL slugs use it too) but isn't the formal code.
+
 ## Domain Weights
 | Domain | Weight | Modules |
 |--------|--------|---------|
@@ -51,7 +53,7 @@ cca-prep/
 │   ├── cicd_pipeline_05/      # D3, D4: Non-interactive, session isolation, batch
 │   └── extraction_06/         # D4, D5: Forced tool_use, validation-retry, citations
 └── .claude/
-    ├── commands/          # Slash commands (start-module, check-work, quiz-me, next-challenge)
+    ├── skills/            # Skills, SKILL.md format (start-module, check-work, quiz-me, next-challenge)
     ├── agents/            # Custom agents (eval-judge, exam-coach, code-reviewer)
     └── rules/             # Rules (python-style, testing)
 ```
@@ -92,6 +94,8 @@ From Anthropic's "Building Effective Agents":
 | `max_tokens` | Hit max_tokens limit |
 | `stop_sequence` | Hit a custom stop sequence |
 | `tool_use` | Model wants to call a tool |
+| `pause_turn` | Long-running/server-tool turn paused — resend as-is to continue |
+| `refusal` | Model declined to respond (safety classifier); returned as HTTP 200, not an error |
 | `model_context_window_exceeded` | Context window full |
 
 ### tool_choice Options
@@ -106,15 +110,15 @@ From Anthropic's "Building Effective Agents":
 - Cache hit = **10% of base cost**
 - 5-min TTL = 1.25x write cost
 - 1-hour TTL = 2x write cost
-- Minimum **1024 tokens** to cache
+- Minimum tokens to cache is **model-dependent**, not a flat rule: Sonnet 5 / Opus 4.8 = 1,024 · Fable 5 / Mythos 5 = 512 · Opus 4.6 & Haiku 4.5 = 4,096 · Haiku 3.5 = 2,048
 - Up to **4 cache breakpoints**
 - Prefix order: **tools -> system -> messages**
 
 ### Batch API
-- Max **10,000 requests** per batch
+- Max **100,000 requests or 256 MB** per batch, whichever is reached first
 - **50% discount** on token costs
-- **24-hour** processing window
-- **No SLA**, no streaming, no multi-turn tool calling
+- **24-hour** processing window, no SLA (best-effort, most finish within 1 hour)
+- Multi-turn conversations **and tool use (including server tools) ARE supported** — the actual unsupported list is `stream:true`, thread/`store` continuation params, cache hints, `max_tokens:0`, and Fast mode
 - Results as **.jsonl** available for **29 days**
 
 ### Extended Thinking
@@ -123,35 +127,44 @@ From Anthropic's "Building Effective Agents":
 
 ### Citations
 - `cited_text` is **NOT counted** as output tokens
-- **Incompatible** with Structured Outputs (JSON mode)
+- **Incompatible** with Structured Outputs (JSON mode) — combining them returns a 400 error
 - Enable on **ALL or NONE** documents
-- ~**15% better recall** when enabled
+- Official claim (no percentage given): citations are "significantly more likely to cite the most relevant quotes" than prompt-based approaches alone — treat any specific "~X% better recall" figure as unsourced prep-lore
 
 ### CLAUDE.md Hierarchy
+Load order, broadest → narrowest. Files are **concatenated** into context, not override-replaced — narrower scopes are read later, so they carry more attention, but nothing is discarded:
 ```
-user (~/.claude/CLAUDE.md)
-  → project (repo root CLAUDE.md)
-    → directory (subdirectory CLAUDE.md)
-      → @import references
-        → .claude/rules/*.md
+Managed policy (org-wide, cannot be excluded by any setting)
+  → User (~/.claude/CLAUDE.md)
+    → Project (repo root CLAUDE.md, plus nested CLAUDE.md in subdirectories)
+      → Local (CLAUDE.local.md — appended after CLAUDE.md within each directory)
 ```
+`@imports` and `.claude/rules/*.md` are **separate mechanisms**, not extra tiers of the scope chain above:
+- `@path/to/import` resolves relative to the **importing file**, not cwd; max recursion depth **4**.
+- Rules **without** `paths:` frontmatter load at launch with the **same priority as `.claude/CLAUDE.md`**. Rules **with** `paths:` (path-scoped) load only when Claude touches a matching file.
+
 Only **project-level and below** are shared via VCS.
 
 ### Context Windows
 | Model | Input | Max Output |
 |-------|-------|------------|
 | Opus 4.6 | 1M tokens | 128K tokens |
-| Sonnet 4.6 | 1M tokens | 64K tokens |
+| Sonnet 4.6 | 1M tokens | **128K tokens** |
 | Haiku 4.5 | 200K tokens | 64K tokens |
 
-Long context pricing (Sonnet 4/4.5): >200K input = 2x input cost, 1.5x output cost.
+All current 1M-context models (Opus 4.6+, Sonnet 4.6+) bill at **standard rates across the full window** — no long-context multiplier, no beta header required. (A prior "2x input / 1.5x output above 200K" surcharge claim for Sonnet 4/4.5 does not appear on any current official pricing page and is incoherent for Sonnet 4.5 specifically, which only has a 200K window — treat it as outdated/incorrect.)
 
 ### Model Pricing (per million tokens)
-| Model | Input | Output |
-|-------|-------|--------|
-| Opus 4.6 | $5 | $25 |
-| Sonnet 4.6 | $3 | $15 |
-| Haiku 4.5 | $1 | $5 |
+*Verified as of 2026-07-16 — this lineup moves fast; re-check before relying on it.*
+
+| Model | Input | Output | Notes |
+|-------|-------|--------|-------|
+| Fable 5 / Mythos 5 | $10 | $50 | current top tier, sits above Opus |
+| Sonnet 5 | $2 → $3 | $10 → $15 | intro pricing through Aug 31 2026, then standard; current default Free/Pro model |
+| Opus 4.8 | $5 | $25 | current Opus flagship |
+| Opus 4.6 *(legacy — still active)* | $5 | $25 | |
+| Sonnet 4.6 *(legacy — still active)* | $3 | $15 | |
+| Haiku 4.5 | $1 | $5 | |
 
 ## 10 Exam Anti-Patterns
 
@@ -162,7 +175,7 @@ Long context pricing (Sonnet 4/4.5): >200K input = 2x input cost, 1.5x output co
 5. **Sentiment-based escalation triggers** ("customer sounds angry")
 6. **Generic error messages** without `isError`, `errorCategory`, `isRetryable` fields
 7. **Silently suppressing errors** or returning empty results as success
-8. **More than 5 tools per agent** (18+ tools degrades selection reliability)
+8. **Treating "5 tools max" as a hard cap** — a useful heuristic before Nov 2025, now superseded by Tool Search Tool + Programmatic Tool Calling (keeps unused tool definitions out of context, scaling to thousands of tools). No official source quantifies a specific degradation percentage; treat tool-count ceilings as an architecture choice, not a fixed rule.
 9. **Same-session self-review** (use separate sessions to avoid confirmation bias)
 10. **Aggregate accuracy metrics only** — must track per-document-type AND per-field metrics
 
@@ -181,3 +194,5 @@ This Notion workspace contains:
 - **Project Spec** — Complete reference implementations for every module if you get stuck
 
 When `/quiz-me` or the `exam-coach` agent can't answer something, check the Notion study guide.
+
+See also `wiki/beyond-the-blueprint.md` — post-blueprint developments (current model lineup, Tool Search Tool, Managed Agents, etc.) that may not yet be tested but are worth knowing. Read it alongside the reference card above, not instead of it.

@@ -1,4 +1,6 @@
 ---
+name: exam-coach
+description: Use as a Socratic CCA-F tutor when the learner asks to understand, explain, or work through a concept rather than just be told the answer — probes their reasoning first, connects it to the relevant anti-pattern, and only then gives the answer. Invoke on "explain X", "why is this wrong", or general exam-concept confusion.
 tools: Read, WebSearch
 model: sonnet
 ---

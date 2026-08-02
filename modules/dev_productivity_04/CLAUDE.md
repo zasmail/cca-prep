@@ -18,7 +18,11 @@
 - **MultiEdit**: Use for multiple changes to the same file — avoids sequential Edit anti-pattern
 
 ## Anti-Patterns Tested
-- AP8: More than 5 tools per agent (18+ tools degrades selection by ~40%)
+- AP8: More than 5 tools per agent (heuristic, not an official hard limit —
+  selection reliability degrades as tool count grows; no official source
+  quantifies a percentage. Nov 2025 Tool Search Tool + Programmatic Tool
+  Calling reframe this as an architecture choice, letting tool count scale
+  into the thousands without a hard cap)
 - Using Bash for operations that have dedicated tools (cat, grep, find)
 - Using Write to make small edits (overwrites entire file — use Edit instead)
 - Using Edit to create new files (Edit requires existing content to match on)

@@ -1,8 +1,10 @@
 # CCA-F Exam Prep — Hands-On Learning System
 
-A build-by-doing prep system for the **Claude Certified Architect — Foundations (CCA-F)** exam. Six hands-on modules, one per exam scenario, themed around fintech (payments, accounts, KYC, fraud).
+A build-by-doing prep system for the **Claude Certified Architect — Foundations (CCA-F)** exam.[^1] Six hands-on modules, one per exam scenario, themed around fintech (payments, accounts, KYC, fraud).
 
-**Exam:** 60 MCQ, 120 min, 720/1000 to pass, proctored, no Claude allowed.
+**Exam:** 60 multiple-choice and multiple-response items (some questions require selecting more than one correct answer), 120 min, 720/1000 to pass, proctored, no Claude allowed.
+
+[^1]: Official exam code on the guide cover is **CCAR-F**; "CCA-F" is the common short name used here and in Anthropic's own URL slugs.
 
 ## Prerequisites
 
@@ -43,6 +45,13 @@ claude
 
 **D1 + D3 = 47% of the exam.** Modules 01 and 02 cover these — start there.
 
+## Exam Logistics
+
+- **Structure:** 4 scenarios drawn at random from a bank of 6 per sitting; each scenario anchors several of the 60 items.
+- **Retakes:** wait 14 days after a 1st fail, 30 after a 2nd, 90 after a 3rd — max 4 attempts per rolling 12-month period.
+- **Validity:** credential is valid for 12 months from the date awarded; renew with a free, non-proctored assessment before it lapses (a lapsed credential requires a full retake at full fee).
+- **Out of scope** (won't appear on the exam — don't over-study these): fine-tuning/training custom models, API auth/billing/account management, Claude's internal architecture or model weights, computer use, vision, streaming API internals, tokenization/token-counting algorithms, and prompt-caching *implementation* internals (the caching behavior/pricing rules above are fair game — the underlying mechanics are not).
+
 ## Modules
 
 | # | Module | Domains | What You Build |
@@ -77,7 +86,7 @@ Each module has 3 tiers: **starter** (core pattern) → **intermediate** (produc
 
 **Programmatic enforcement vs prompt-based guidance.**
 
-When a behavior MUST be GUARANTEED, the answer is ALWAYS programmatic (hooks, prerequisite gates, schema validation). Prompts can be ignored. Hooks cannot. This distinction appears in nearly half the exam questions.
+When a behavior MUST be GUARANTEED, the answer is ALWAYS programmatic (hooks, prerequisite gates, schema validation). Prompts can be ignored. Hooks cannot. This distinction underlies the two highest-weighted domains — D1 + D3 = 47% of the exam by weight (no official source quantifies how often it shows up question-by-question, but weight is the real signal).
 
 ## Project Structure
 

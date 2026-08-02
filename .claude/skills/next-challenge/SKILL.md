@@ -1,4 +1,6 @@
 ---
+name: next-challenge
+description: Determines and advances the learner to the next exercise tier — runs tests for the current tier, gives targeted hints on failure, or advances to the next tier/module and congratulates on pass. Trigger on "next challenge", "what's next", or "move on to the next tier".
 allowed-tools: Read, Write, Bash, Glob
 ---
 

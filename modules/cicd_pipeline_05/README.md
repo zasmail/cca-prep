@@ -37,7 +37,9 @@ Two SEPARATE sessions demonstrating AP9 compliance:
 Bulk file review using the Anthropic Batch API:
 - 50% cheaper than real-time API calls
 - 24-hour processing window (no SLA)
-- No streaming, no multi-turn tool calling
+- Multi-turn conversations and tool use ARE supported per request — no
+  streaming, thread/store continuation, cache hints, `max_tokens:0`, or Fast mode
+- Max 100,000 requests per batch (or 256 MB, whichever comes first)
 - Results as .jsonl, available for 29 days
 
 ## Running
@@ -63,5 +65,5 @@ uv run pytest modules/cicd_pipeline_05/ -v
 - `claude -p` is REQUIRED for CI/CD — interactive mode blocks pipelines
 - Session isolation (AP9) is one of the most commonly tested anti-patterns
 - `--permission-mode plan` makes a session read-only (no writes, no executions)
-- Batch API has NO SLA and NO streaming — only use for non-urgent work
+- Batch API has NO SLA and NO streaming — but DOES support multi-turn and tool use; only use for non-urgent work
 - `--json-schema` gives you structured output without tool_use tricks

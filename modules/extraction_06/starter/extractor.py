@@ -128,7 +128,7 @@ INVOICE_SCHEMA: dict[str, Any] = {
 def extract_invoice(
     document_text: str,
     *,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> dict[str, Any]:
     """Extract structured invoice data from a document using forced tool_use.
 
@@ -196,7 +196,7 @@ def extract_with_system_context(
     document_text: str,
     document_type: str = "invoice",
     *,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> dict[str, Any]:
     """Extract with additional system context about the document type.
 

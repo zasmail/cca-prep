@@ -104,8 +104,11 @@ class TestAgentFileConfiguration:
     def test_agent_tools_under_limit(self) -> None:
         """Each agent should have 5 or fewer tools (AP8).
 
-        Key exam concept (AP8): 18+ tools degrades selection reliability.
-        Keep each agent focused with a small, task-appropriate tool set.
+        Key exam concept (AP8): a few focused tools per agent is a good design
+        heuristic, not a platform-enforced hard cap. For agents that genuinely
+        need many tools, Anthropic's Nov 2025 Tool Search Tool and Programmatic
+        Tool Calling are the current scaling answer — reach for those instead
+        of assuming a fixed ceiling degrades selection.
         """
         for agent_file in self._get_agent_files():
             fm = self._parse_frontmatter(agent_file)
@@ -115,7 +118,9 @@ class TestAgentFileConfiguration:
 
                 assert len(tools) <= 5, (
                     f"Agent {agent_file.name} has {len(tools)} tools. "
-                    "AP8: Keep tools under 5 per agent for reliable selection."
+                    "AP8: Keep tools scoped per agent (heuristic, not a hard "
+                    "cap). If this agent genuinely needs more, reach for Tool "
+                    "Search Tool / Programmatic Tool Calling instead."
                 )
 
 

@@ -209,7 +209,7 @@ class TestToolCountValidation:
             pytest.skip("validate_tool_count not yet implemented")
 
     def test_eighteen_plus_tools_is_critical(self) -> None:
-        """18+ tools should report critical degradation (~40% drop)."""
+        """18+ tools should report critical degradation (heuristic threshold, no official percentage)."""
         from modules.dev_productivity_04.starter.tool_selection import validate_tool_count
 
         try:
@@ -218,6 +218,6 @@ class TestToolCountValidation:
             is_valid, message = validate_tool_count(tools)
 
             assert is_valid is False
-            assert "40%" in message or "critical" in message.lower()
+            assert "critical" in message.lower()
         except NotImplementedError:
             pytest.skip("validate_tool_count not yet implemented")

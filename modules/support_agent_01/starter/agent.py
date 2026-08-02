@@ -141,7 +141,7 @@ def run_support_agent(
     user_message: str,
     *,
     max_iterations: int = 25,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> str:
     """Run the customer support agent loop.
 

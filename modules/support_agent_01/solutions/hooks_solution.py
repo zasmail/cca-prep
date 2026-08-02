@@ -241,7 +241,7 @@ def run_agent_with_hooks(
     *,
     max_turns: int = 20,
     max_budget_usd: float = 2.0,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> dict[str, Any]:
     """Run the support agent with hook-based enforcement.
 

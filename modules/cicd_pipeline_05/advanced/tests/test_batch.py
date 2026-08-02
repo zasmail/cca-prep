@@ -145,16 +145,42 @@ class TestBatchConstraintsAwareness:
             "Code must document that Batch API does not support streaming"
         )
 
-    def test_code_documents_no_multi_turn(self) -> None:
-        """Code must document that batch does not support multi-turn tool calling."""
+    def test_code_documents_multi_turn_is_supported(self) -> None:
+        """Code must correctly document that Batch DOES support multi-turn
+        conversations and tool use — the real restriction is narrower
+        (no streaming, no thread/store continuation, no cache hints,
+        no max_tokens:0, no Fast mode).
+        """
         import inspect
         from modules.cicd_pipeline_05.advanced import batch_review
 
         source = inspect.getsource(batch_review)
 
-        assert "multi-turn" in source.lower() or "single-turn" in source.lower() or \
-               "single turn" in source.lower(), (
-            "Code must document that Batch API does not support multi-turn tool calling"
+        assert "multi-turn" in source.lower(), (
+            "Code must mention multi-turn support/behavior in Batch"
+        )
+        assert "are supported" in source.lower() or "ARE supported" in source, (
+            "Code must document that multi-turn conversations and tool use "
+            "ARE supported in Batch (not a blanket 'no multi-turn' claim)"
+        )
+
+    def test_code_documents_max_requests_per_batch(self) -> None:
+        """Code must document the correct Batch API request/size ceiling:
+        100,000 requests OR 256 MB, whichever is reached first.
+        """
+        import inspect
+        from modules.cicd_pipeline_05.advanced import batch_review
+
+        source = inspect.getsource(batch_review)
+
+        assert "100,000" in source or "100000" in source, (
+            "Code must document the 100,000 requests per batch limit"
+        )
+        assert "256 MB" in source or "256MB" in source, (
+            "Code must document the 256 MB batch size limit"
+        )
+        assert "10,000" not in source and "10000" not in source, (
+            "Code must not still reference the stale 10,000-request limit"
         )
 
     def test_code_documents_jsonl_29_days(self) -> None:

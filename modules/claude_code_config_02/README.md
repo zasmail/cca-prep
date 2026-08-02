@@ -8,8 +8,9 @@ Build the foundational configuration layer for a Next.js fintech dashboard proje
 2. Review `starter/rules/api-routes.md` — understand path-scoped rules
 3. Run `starter/tests/test_config.py` to validate your work
 
-**Key exam concept**: CLAUDE.md hierarchy determines instruction precedence.
-Directory-level CLAUDE.md overrides project-level for files in that directory.
+**Key exam concept**: CLAUDE.md files are **concatenated**, not override-replaced.
+Directory-level content loads *after* project-level content (and gets more of the
+model's attention as a result), but nothing from project-level is discarded.
 
 ## Intermediate: Slash Commands
 

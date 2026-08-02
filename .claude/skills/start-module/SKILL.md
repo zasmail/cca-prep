@@ -1,4 +1,6 @@
 ---
+name: start-module
+description: Use when the learner wants to begin or resume a CCA-F module (1-6) — reads the module's CLAUDE.md, shows domain weight and learning objectives, checks progress, and gives a concrete first TODO. Trigger on "start module N", "begin module N", or "let's do module N".
 argument-hint: <module-number 1-6>
 allowed-tools: Read, Write, Bash, Glob
 ---

@@ -1,0 +1,56 @@
+# Skills & Progressive Disclosure
+
+## The thread
+
+The field's builders have converged on a surprisingly humble definition of an Agent Skill: **an organized folder of files** — a `SKILL.md` with `name` and `description` metadata, plus optional reference docs and executable scripts. Barry Zhang and Mahesh Murag are emphatic that "this simplicity is deliberate" — folders are a decades-old primitive, version-controllable in Git, shareable via Drive or a zip, creatable by any human or agent with a computer ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md), [blog-agent-skills](../research/notes/blog-agent-skills.md)). The bet is that the *scaffolding* underneath agents is now universal — "code is all we need," just bash plus a filesystem — so the thing worth building is not another bespoke agent per domain but the **procedural expertise** you pour into that general agent. The framing: an agent is Mahesh the 300-IQ genius; a skill turns it into Barry the experienced tax professional who gives *consistent* execution ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md)).
+
+The mechanism that makes this scale is **progressive disclosure**: a three-tier context-loading discipline. At runtime only the metadata (name + description) is shown to the model, just to signal the skill *exists*. When the agent judges a skill relevant, it reads the `SKILL.md` body (core instructions + a directory of the rest of the folder). Bundled files and scripts load only when actually needed ([blog-agent-skills](../research/notes/blog-agent-skills.md)). This is the same move as a well-structured manual — table of contents → chapter → appendix — and it's what lets *hundreds* of composable skills coexist without ever bloating the context window. It's the direct antidote to the "load everything upfront" failure that plagues large tool APIs, where MCP tool definitions alone can burn hundreds of thousands of tokens before work begins ([blog-code-execution-mcp](../research/notes/blog-code-execution-mcp.md)). This is fundamentally a [context-engineering](context-engineering.md) technique — treating the token budget as a finite, high-signal resource ([blog-context-engineering](../research/notes/blog-context-engineering.md)).
+
+The two other convergent ideas: **scripts beat prose for procedural steps**, and **skills complement MCP rather than replace it**. Anthropic kept watching Claude re-write the same slide-styling Python, so they had it save the script into a skill for its future self — deterministic, tested, and cheaper than re-reasoning every time ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md)). In the emerging stack, **MCP provides connection to the outside world; skills provide the expertise** on top of it ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md)). See [tool-design-and-mcp](tool-design-and-mcp.md) for the connectivity layer.
+
+## Patterns
+
+**Progressive disclosure (three-tier loading)** — Metadata always visible; body loaded on relevance; bundled files pulled on demand. Use it any time skill content is large or you want many skills available at once. It's the core innovation and the most exam-relevant one. ([blog-agent-skills](../research/notes/blog-agent-skills.md), [dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+
+**Descriptions as triggers** — The `description` field is the *only* thing the model sees to decide whether to invoke a skill. It is a routing signal, not documentation. Write it to match how the agent will actually reach for it, and refine it iteratively from observed behavior. ([blog-agent-skills](../research/notes/blog-agent-skills.md))
+
+**Author from observed eval gaps** — Don't speculate about skills. Run the agent on real production tasks, find where it fails, write a skill to fill that specific gap, watch how Claude uses it, refine naming/description, repeat. Data-driven, mirrors the eval-driven loop for [tool-design-and-mcp](tool-design-and-mcp.md). ([blog-agent-skills](../research/notes/blog-agent-skills.md), [blog-writing-tools](../research/notes/blog-writing-tools.md))
+
+**Code-as-tool** — Bundle a deterministic, tested script rather than prompting Claude to reason through a procedure each time. Claude calls the script as a tool; it never reads it into context. Best for validation, extraction, formatting, any task needing a guaranteed output. Ties to the "programmatic enforcement over prompt guidance" principle in [enforcement-reliability](enforcement-reliability.md). ([blog-agent-skills](../research/notes/blog-agent-skills.md), [blog-code-execution-mcp](../research/notes/blog-code-execution-mcp.md))
+
+**Three-tier skill ecosystem** — Foundational (Anthropic's doc skills, Cadence's bioinformatics), third-party partner (Browserbase Stagehand, Notion workspace skills), and enterprise/team (org best-practices, internal-software quirks). Enterprise is where builders report the most traction. ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+
+**Skill-generated learning / compounding** — Standardized format means anything Claude writes down is consumable by a future version of itself. Claude can author skills today via the `skill creator` skill. This is the concrete path to memory-as-procedural-knowledge; see [memory-and-compounding](memory-and-compounding.md). ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+
+**Trust boundary / supply chain** — A malicious skill can instruct exfiltration or unwanted actions. Install only from trusted sources; audit bundled code and external network references before use. Skills shift the threat model from API-misuse to software supply-chain. ([blog-agent-skills](../research/notes/blog-agent-skills.md))
+
+## Numbers & rules of thumb
+
+- **3 tiers of disclosure**: metadata → body (`SKILL.md`) → bundled files ([blog-agent-skills](../research/notes/blog-agent-skills.md))
+- **Hundreds of skills** can coexist in one agent because only metadata is preloaded ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+- **4 deployment surfaces**: Claude.ai, Claude Code, Agent SDK, Developer Platform ([blog-agent-skills](../research/notes/blog-agent-skills.md))
+- **~5 weeks post-launch → thousands of skills**, and financial-services + life-sciences verticals shipped immediately ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+- **150,000 → 2,000 tokens (98.7%)**: reduction when tool defs load on demand via code execution vs. upfront — the same disclosure logic applied to MCP ([blog-code-execution-mcp](../research/notes/blog-code-execution-mcp.md))
+- **Day 30 >> Day 1**: the compounding-learning target for an agent accumulating skills ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+- **>5 tools per agent** degrades selection; the parallel lesson for skills is quality/description-fit over sheer count ([blog-context-engineering](../research/notes/blog-context-engineering.md))
+- Build-effort curve: today **minutes-to-hours**; trending toward **weeks-to-months**, software-quality, with versioning and dependencies ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md))
+
+## Where speakers disagree
+
+**"Build skills, not agents" vs. the durable value of scaffolding.** Zhang/Murag argue the agent is now universal — stop rebuilding agents, put your effort into skills ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md)). Cat Wu's "scaffolding gets subsumed by models" cuts the same way but sharper: features you build to prop up *today's* model (she cites plan mode) become unnecessary as models improve ([ai-and-i-cat-wu-cherny](../research/notes/ai-and-i-cat-wu-cherny.md)). The tension: if scaffolding erodes, do skills erode too? The skills camp's answer is no — skills encode *domain/procedural* knowledge (the 2025 tax code, your org's bespoke software), which the model won't absorb from pretraining. But it's an unsettled bet on where the model/skill boundary lands.
+
+**Skills as maturing software vs. skills as ephemeral memory.** The same talk holds both: skills should be "treated like software" — versioned, tested, dependency-tracked, weeks-to-months of effort — *and* skills make memory "more tangible," acquired instantly and "dropped when obsolete" ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md)). Heavyweight audited artifact or lightweight disposable note? In practice both, but they imply opposite governance regimes.
+
+**Skills vs. MCP as the primary extension mechanism.** The MCP track frames dynamic *tool* discovery as the killer differentiator enabling 5,000+ tool marketplaces ([aiewf-2025-mcp-track](../research/notes/aiewf-2025-mcp-track.md)); the skills talk reframes MCP as merely the connectivity layer beneath skills-as-expertise. Complementary on paper, but they compete for the same "how do I extend my agent" mindshare.
+
+## Interview-ready takes
+
+1. **"Progressive disclosure is context engineering, not a feature."** Preloading only metadata, loading the body on relevance, and bundling files on demand is what lets one agent hold hundreds of skills without context rot. It's the same economics as on-demand MCP tool loading (150k→2k tokens). Argue it as a token-budget discipline. ([blog-agent-skills](../research/notes/blog-agent-skills.md), [blog-code-execution-mcp](../research/notes/blog-code-execution-mcp.md))
+
+2. **"The description field is a router, not a doc."** Since metadata is all the model sees at selection time, a skill's `description` is a triggering signal you tune from observed usage — the same eval-driven loop you'd run on a tool description. Bad description = skill never fires or fires wrong. ([blog-agent-skills](../research/notes/blog-agent-skills.md), [blog-writing-tools](../research/notes/blog-writing-tools.md))
+
+3. **"Author skills from failure modes, never from imagination."** Run the agent on real tasks, find the gaps, fill exactly those. This grounds skill libraries in production reality and avoids the tool-sprawl anti-pattern. ([blog-agent-skills](../research/notes/blog-agent-skills.md))
+
+4. **"Bundle a script when you need a guarantee; write a prompt when you need judgment."** Code-as-tool gives deterministic, tested execution for validation/extraction/formatting — the enforcement-over-guidance principle applied to skills. Prose in `SKILL.md` is for the judgment calls. ([blog-agent-skills](../research/notes/blog-agent-skills.md), [enforcement-reliability](enforcement-reliability.md))
+
+5. **"Skills are how expertise compounds and distributes."** Standardized folders mean an agent's own output feeds its future self (Day 30 >> Day 1), and org → team → community sharing follows the MCP-server precedent — but treat untrusted skills as a supply-chain risk and audit bundled code. ([dont-build-agents-build-skills](../research/notes/dont-build-agents-build-skills.md), [memory-and-compounding](memory-and-compounding.md))

@@ -111,7 +111,7 @@ def extract_with_validation(
     document_text: str,
     *,
     max_retries: int = 3,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> dict[str, Any]:
     """Extract invoice data with validation-retry loop.
 

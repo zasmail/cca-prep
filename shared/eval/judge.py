@@ -43,7 +43,7 @@ Respond with ONLY valid JSON:
 
 def create_llm_judge(
     rubric: JudgeRubric,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> callable:
     """Create an LLM-as-judge grading function.
 
@@ -117,7 +117,7 @@ def _estimate_cost(response: anthropic.types.Message, model: str) -> float:
 
     # Pricing per million tokens
     pricing = {
-        "claude-sonnet-4-6-20250514": {"input": 3.0, "output": 15.0},
+        "claude-sonnet-4-6": {"input": 3.0, "output": 15.0},
         "claude-haiku-4-5-20251001": {"input": 1.0, "output": 5.0},
     }
 

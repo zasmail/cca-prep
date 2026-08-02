@@ -21,7 +21,7 @@
 ## Anti-Patterns Tested
 - **AP6**: Generic error messages — errors MUST include category, message, isRetryable, and what was attempted
 - **AP7**: Silent error suppression — returning `{}` or `[]` on failure instead of structured error
-- **AP8**: Too many tools per agent — each worker should have <=5 tools scoped to its task
+- **AP8**: Too many tools per agent — a few focused tools scoped to its task is a good heuristic for worker design (not a hard cap enforced by the platform). For agents that genuinely need many tools, Anthropic's Nov 2025 Tool Search Tool (keeps tool defs out of context until requested) and Programmatic Tool Calling (Claude writes code to call multiple tools in one round-trip) are the current scaling answer — reach for those before assuming a tool-count ceiling
 - **AP9**: Same-session self-review — use separate context (context: fork) for evaluation
 
 ## Progression

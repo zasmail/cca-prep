@@ -1,0 +1,43 @@
+YouTube Transcript Retrieval Attempt Report
+Date: 2026-07-16
+Status: RE-BLOCKED
+
+Retrieval was attempted for 27 videos in this order:
+1. karpathy-software-is-changing (LCEmiRjPEtQ) - FAILED (IP block after retry)
+2. karpathy-vibe-to-agentic (96jN2OCOfLs) - NOT ATTEMPTED (re-blocked)
+3. no-priors-karpathy-loopy-era (kwSVtQ7dziU) - NOT ATTEMPTED (re-blocked)
+4. how-we-build-effective-agents (D7_ipDqhtwk) - NOT ATTEMPTED (re-blocked)
+5. cowork-gtm-workshop-workos (8bjcx5Hkj5w) - NOT ATTEMPTED (re-blocked)
+6. agents-run-for-hours (mR-WAvEPRwE) - NOT ATTEMPTED (re-blocked)
+7. reinvent-long-horizon-agents (GstBm6ywE1Q) - NOT ATTEMPTED (re-blocked)
+8. prompting-for-agents (XSZP9GhhuAc) - NOT ATTEMPTED (re-blocked)
+9. beyond-basics-claude-code (tuY2ChJIx48) - NOT ATTEMPTED (re-blocked)
+10. vibe-coding-in-prod (fHWFF_pnqDk) - NOT ATTEMPTED (re-blocked)
+11. karpathy-intro-to-llms (zjkBMFhNj_g) - NOT ATTEMPTED (re-blocked)
+12. karpathy-how-i-use-llms (EWvNQjAaOHw) - NOT ATTEMPTED (re-blocked)
+13. karpathy-deep-dive-llms (7xTGNNLPyMI) - NOT ATTEMPTED (re-blocked)
+14. karpathy-state-of-gpt (bZQun8Y4L2A) - NOT ATTEMPTED (re-blocked)
+15. karpathy-cs25-transformers (XfpMkf4rD6E) - NOT ATTEMPTED (re-blocked)
+16. karpathy-lets-build-gpt (kCc8FmEb1nY) - NOT ATTEMPTED (re-blocked)
+17. karpathy-tokenizer (zduSFxRajkE) - NOT ATTEMPTED (re-blocked)
+18. karpathy-berkeley-hackathon (tsTeEkzO9xc) - NOT ATTEMPTED (re-blocked)
+19. cwc-2025-keynote (EvtPBaaykdo) - NOT ATTEMPTED (re-blocked)
+20. cwc-2026-sf-keynote (wjvESxKgqaQ) - NOT ATTEMPTED (re-blocked)
+21. cwc-2026-tokyo-keynote (N4efO8viXXo) - NOT ATTEMPTED (re-blocked)
+22. cwc-2026-london-keynote (6amLO7I9xdg) - NOT ATTEMPTED (re-blocked)
+23. no-priors-ben-mann (aStf54Vxy24) - NOT ATTEMPTED (re-blocked)
+24. spotify-anthropic-agentic-dev (fHDGQHr_agg) - NOT ATTEMPTED (re-blocked)
+25. claude-on-google-cloud (l8fxVYIP4HQ) - NOT ATTEMPTED (re-blocked)
+26. vertex-ai-agents-webinar (TUysIAtxyrQ) - NOT ATTEMPTED (re-blocked)
+27. spc-rahul-patil (9FTkrlAWXpk) - NOT ATTEMPTED (re-blocked)
+
+Error Details:
+YouTube is blocking requests from the current IP (cloud provider or rate limit).
+Attempted cooldown: 600 seconds
+Retry result: Still blocked
+
+Recommendation:
+- Wait 24-48 hours for IP block to lift naturally
+- Consider retrieving from a different network/IP
+- Alternative: Use browser-based manual download or YouTube Premium integration
+- VPN might help but YouTube actively blocks VPN IPs

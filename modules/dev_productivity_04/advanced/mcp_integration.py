@@ -11,7 +11,10 @@ Key concepts tested:
 - Tool definitions follow the same input_schema format as API tools
 - Connection lifecycle: initialize -> list tools -> call tool -> shutdown
 - .mcp.json configures server connections for Claude Code
-- MCP tools count toward the AP8 tool limit (5 per agent guideline)
+- MCP tools count toward the AP8 tool-count heuristic (~5 per agent as a
+  starting point, not an official hard limit); Anthropic's Nov 2025 Tool
+  Search Tool + Programmatic Tool Calling are the current way to scale an
+  MCP server's tool count without paying the context cost of every definition
 """
 
 from __future__ import annotations
@@ -227,21 +230,29 @@ def build_agent_with_mcp_tools(
     mcp_tools: list[dict[str, Any]],
     max_tools_per_agent: int = 5,
 ) -> list[dict[str, Any]]:
-    """Select the most relevant MCP tools for an agent, respecting AP8 limits.
+    """Select the most relevant MCP tools for an agent, respecting AP8 guidance.
 
-    AP8: More than 5 tools per agent degrades selection reliability.
-    When an MCP server provides many tools, you must select a subset.
+    AP8 (heuristic, not an official hard limit): keeping an agent's tool list
+    small and focused reduces tool-selection mistakes. When an MCP server
+    provides many tools, consider selecting a relevant subset — or, per
+    Anthropic's Nov 2025 Advanced Tool Use guidance, use the Tool Search Tool
+    (keeps unused definitions out of context) or Programmatic Tool Calling
+    (Claude writes code to orchestrate many tools in one round-trip) instead
+    of hard-capping the server's tool count.
 
     TODO: Implement tool selection for agent configuration.
 
     Strategy:
     1. If len(mcp_tools) <= max_tools_per_agent, use all of them
     2. If more, select the most relevant based on the agent's purpose
-    3. Consider splitting into multiple specialized agents (orchestrator pattern)
+    3. Consider splitting into multiple specialized agents (orchestrator pattern),
+       or reach for Tool Search Tool / Programmatic Tool Calling instead of an
+       arbitrary cutoff
 
     Args:
         mcp_tools: All available tools from MCP server(s).
-        max_tools_per_agent: Maximum tools per agent (default 5, per AP8).
+        max_tools_per_agent: Default tool budget per agent (heuristic starting
+            point of 5, per AP8 — not an official hard limit).
 
     Returns:
         Selected subset of tools for this agent.

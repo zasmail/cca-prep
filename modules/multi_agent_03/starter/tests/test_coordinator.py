@@ -130,12 +130,15 @@ class TestCoordinatorManagesAllCommunication:
     def test_coordinator_tools_are_under_limit(self) -> None:
         """Coordinator should have a focused set of tools (AP8 check).
 
-        Key exam concept (AP8): 18+ tools degrades selection reliability.
-        Even the coordinator should have a focused tool set.
+        Key exam concept (AP8): a few focused tools is a design heuristic,
+        not a platform-enforced hard cap. Even the coordinator should have a
+        focused tool set; agents that need to scale beyond that should reach
+        for Tool Search Tool / Programmatic Tool Calling (Nov 2025) rather
+        than a fixed ceiling.
         """
         assert len(COORDINATOR_TOOLS) <= 5, (
             f"Coordinator has {len(COORDINATOR_TOOLS)} tools. "
-            "AP8: Keep tools under 5 per agent for reliable selection. "
+            "AP8: Keep tools scoped per agent (heuristic, not a hard cap). "
             "The coordinator needs: delegate, synthesize, and maybe 1-2 utility tools."
         )
 

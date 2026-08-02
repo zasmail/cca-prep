@@ -116,7 +116,7 @@ def run_production_agent(
     user_message: str,
     *,
     max_iterations: int = 25,
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> dict[str, Any]:
     """Run the production-grade support agent.
 

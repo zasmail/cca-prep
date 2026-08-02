@@ -1,4 +1,6 @@
 ---
+name: eval-judge
+description: Use to strictly grade a finished implementation against the exam rubric and anti-pattern checklist, running its tests and returning a PASS/NEEDS_WORK/FAIL verdict. Invoke as a separate session from the one that wrote the code (per AP9, same-session self-review is invalid) whenever the user asks to grade, score, or judge a module or tier.
 tools: Read, Bash
 ---
 

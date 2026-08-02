@@ -9,14 +9,18 @@ Key concepts tested:
 - Batch API is 50% cheaper than real-time API calls
 - 24-hour processing window — no SLA on completion time
 - No streaming — results are available only after batch completes
-- No multi-turn tool calling — each request is a single turn
+- Multi-turn conversations AND tool use (including server tools) ARE
+  supported in Batch — what's NOT supported: `stream: true`, thread/`store`
+  continuation params, cache hints, `max_tokens: 0`, and Fast mode
 - Results as .jsonl, available for 29 days
-- Max 10,000 requests per batch
+- Max 100,000 requests per batch OR 256 MB, whichever is reached first
 - custom_id required for each request (maps results back to inputs)
 
 EXAM INSIGHT: The exam will ask WHEN to use Batch vs real-time.
 Use Batch when: non-urgent, high volume, cost-sensitive.
-Use real-time when: user-facing, low latency required, multi-turn needed.
+Use real-time when: user-facing, low latency required, or you need
+streaming/thread continuation (Batch supports multi-turn, so that alone
+isn't a reason to avoid it).
 """
 
 from __future__ import annotations
@@ -95,7 +99,7 @@ REVIEW_TOOL: dict[str, Any] = {
 
 def build_batch_requests(
     file_paths: list[str],
-    model: str = "claude-sonnet-4-6-20250514",
+    model: str = "claude-sonnet-4-6",
 ) -> list[dict[str, Any]]:
     """Build batch request objects for each file to review.
 
@@ -121,9 +125,9 @@ def build_batch_requests(
     --json-schema in CLI mode.
 
     Constraints:
-    - Max 10,000 requests per batch
-    - Each request is independent (no multi-turn)
-    - No streaming within batch requests
+    - Max 100,000 requests per batch (or 256 MB, whichever is reached first)
+    - Multi-turn conversations and tool use ARE supported per request
+    - No streaming within batch requests (`stream: true` is unsupported)
 
     Args:
         file_paths: List of file paths to review.
@@ -150,9 +154,11 @@ def submit_batch(requests: list[dict[str, Any]]) -> str:
     - 50% cheaper than real-time calls
     - 24-hour processing window — NO SLA on when it completes
     - No streaming — must poll for completion
-    - No multi-turn tool calling — each request is single-turn
+    - Multi-turn conversations and tool use ARE supported (per request);
+      unsupported: streaming, thread/store continuation, cache hints,
+      max_tokens:0, Fast mode
     - Results as .jsonl available for 29 days
-    - Max 10,000 requests per batch
+    - Max 100,000 requests per batch OR 256 MB, whichever is reached first
 
     Args:
         requests: List of batch request dicts from build_batch_requests().

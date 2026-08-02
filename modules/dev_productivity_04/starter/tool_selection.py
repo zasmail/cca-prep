@@ -12,7 +12,11 @@ Key concepts tested:
 - Using Write for small edits is an anti-pattern (overwrites entire file)
 - Using Edit for new files is wrong (Edit requires existing content to match)
 - MultiEdit exists for multiple changes to the same file
-- AP8: More than 5 tools per agent degrades selection by ~40%
+- AP8: Keep an agent's tool list small and focused — tool selection reliability
+  degrades as tool count grows. This is a design heuristic, not an official
+  hard limit; Anthropic's Nov 2025 Tool Search Tool + Programmatic Tool Calling
+  let tool count scale into the thousands by keeping unused tool defs out of
+  context, so treat "5 tools" as a starting point to justify, not a cap to enforce.
 """
 
 from __future__ import annotations
@@ -135,8 +139,12 @@ def select_correct_tool(task_description: str) -> str:
 def validate_tool_count(tools: list[dict[str, Any]]) -> tuple[bool, str]:
     """Validate that an agent's tool list follows AP8 guidelines.
 
-    AP8: More than 5 tools per agent degrades selection reliability.
-    At 18+ tools, selection accuracy drops by ~40%.
+    AP8 (heuristic, not an official limit): keeping an agent's tool list small
+    and focused reduces tool-selection mistakes. No official Anthropic source
+    quantifies a specific degradation percentage at any threshold — treat the
+    bands below as a teaching heuristic for when to split into specialized
+    agents or adopt Tool Search Tool / Programmatic Tool Calling (Nov 2025),
+    which let tool count scale without every definition sitting in context.
 
     TODO: Implement this function.
 
@@ -144,7 +152,8 @@ def validate_tool_count(tools: list[dict[str, Any]]) -> tuple[bool, str]:
     - 1-5 tools: OK (optimal range)
     - 6-10 tools: WARNING (selection may degrade)
     - 11-17 tools: ERROR (significant degradation)
-    - 18+ tools: CRITICAL (selection reliability drops ~40%)
+    - 18+ tools: CRITICAL (heuristic threshold — consider Tool Search Tool,
+      Programmatic Tool Calling, or splitting into multiple specialized agents)
 
     Args:
         tools: List of tool definition dicts.

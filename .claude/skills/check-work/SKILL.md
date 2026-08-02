@@ -1,4 +1,6 @@
 ---
+name: check-work
+description: Use to review the learner's progress across all CCA-F modules — runs the full test suite, audits code against the 10 anti-patterns, and updates progress.json with a pass/needs-work/critical score per module tier. Trigger on "check my work", "how am I doing", "review my code", or before advancing to a new tier.
 allowed-tools: Read, Bash, Glob, Grep
 ---
 
